@@ -20,3 +20,11 @@ const RnChordsPlayer = NativeModules.RnChordsPlayer
 export function multiply(a: number, b: number): Promise<number> {
   return RnChordsPlayer.multiply(a, b);
 }
+
+export function playBeat(beat: any, bpm: number): void {
+  RnChordsPlayer.playBeat(beat, bpm);
+}
+
+export function stop(): void {
+  RnChordsPlayer.stop();
+}

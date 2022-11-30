@@ -1,18 +1,44 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'rn-chords-player';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { playBeat, stop } from 'rn-chords-player';
+
+const beat1 = {
+  beats: ['down', 'up', 'x', 'up'],
+  duration: 2,
+};
+const beat2 = {
+  beats: ['down', 'down', 'down', 'x', 'up'],
+  duration: 1,
+};
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <TouchableOpacity
+        style={styles.box}
+        onPress={() => {
+          playBeat(beat1, 120);
+        }}
+      >
+        <Text>Beat 1</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.box}
+        onPress={() => {
+          playBeat(beat2, 300);
+        }}
+      >
+        <Text>Beat 2</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.box}
+        onPress={() => {
+          stop();
+        }}
+      >
+        <Text>Stop</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -24,8 +50,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   box: {
-    width: 60,
-    height: 60,
     marginVertical: 20,
+    backgroundColor: '#c0c0c0',
+    padding: 10,
   },
 });
