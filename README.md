@@ -1,26 +1,29 @@
-# rn-chords-player
+# rn-chords-player (Android only)
 
 Chords player for react native
 
 ## Installation
 
 ```sh
-npm install rn-chords-player
+npm install https://github.com/kotlyar-andrey/rn-chords-player
 ```
 
 ## Usage
 
 ```js
-import { multiply } from 'rn-chords-player';
+import { playBeat, stop, Beat } from 'rn-chords-player';
 
 // ...
-
-const result = await multiply(3, 7);
+const beat1: Beat = {
+  strikes: ['down', 'up', 'x', 'up'],
+  duration: 2,
+};
+const bpm: number = 120;
+// ...
+onPress={() => {
+  playBeat(beat1, bpm);
+}}
 ```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
