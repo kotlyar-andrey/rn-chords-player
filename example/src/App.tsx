@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { playBeat, stop } from 'rn-chords-player';
+import { playBeat, stop, Beat } from 'rn-chords-player';
 
-const beat1 = {
-  beats: ['down', 'up', 'x', 'up'],
+const beat1: Beat = {
+  strikes: ['down', 'up', 'x', 'up'],
   duration: 2,
 };
-const beat2 = {
-  beats: ['down', 'down', 'down', 'x', 'up'],
+const beat2: Beat = {
+  strikes: ['down', 'down', 'down', 'x', 'up'],
   duration: 1,
 };
 

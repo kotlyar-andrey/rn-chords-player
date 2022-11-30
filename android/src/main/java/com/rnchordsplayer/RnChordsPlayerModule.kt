@@ -154,18 +154,13 @@ class RnChordsPlayerModule(val reactContext: ReactApplicationContext) :
   * @param bpm Количество ударов метронома в минуту (количество нот длительностью 1/4 в минуте)
   */
   @ReactMethod fun playBeat(beat: ReadableMap, bpm: Int) {
-    val beats: ReadableArray? = beat.getArray("beats");
+    val strikes: ReadableArray? = beat.getArray("strikes");
     val duration: Int = beat.getInt("duration") ?: 2; // Значение по умолчанию - 1/4 длина ноты
-    val beatsAmount: Int = beats?.size() ?: 0;  // количество ударов в бое
+    val strikesAmount: Int = strikes?.size() ?: 0;  // количество ударов в бое
     val baseIntervalMs: Long = getNoteDurationInMs(duration, bpm); // время звучания одной ноты/боя
-    val allBeatsDuration: Long = (baseIntervalMs * beatsAmount).toLong();
-    preparationPlaying(beats);
-    playSounds(allBeatsDuration, baseIntervalMs);
-  }
-
-  @ReactMethod
-  fun multiply(a: Double, b: Double, promise: Promise) {
-    promise.resolve(a * b * 3)
+    val allBeatDuration: Long = (baseIntervalMs * strikesAmount).toLong();
+    preparationPlaying(strikes);
+    playSounds(allBeatDuration, baseIntervalMs);
   }
 
   companion object {

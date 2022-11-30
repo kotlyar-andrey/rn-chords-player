@@ -17,11 +17,16 @@ const RnChordsPlayer = NativeModules.RnChordsPlayer
       }
     );
 
+export interface Beat {
+  strikes: string[];
+  duration: number;
+}
+
 export function multiply(a: number, b: number): Promise<number> {
   return RnChordsPlayer.multiply(a, b);
 }
 
-export function playBeat(beat: any, bpm: number): void {
+export function playBeat(beat: Beat, bpm: number): void {
   RnChordsPlayer.playBeat(beat, bpm);
 }
 
