@@ -35,6 +35,7 @@ class RnChordsPlayerModule(val reactContext: ReactApplicationContext) :
   private val soundsNames: MutableList<String> = mutableListOf<String>(); // список проигрываения с названиями нот/боев
 
   private val EVENT_STRIKE: String = "Strike";
+  private val ALLOW_STRIKES = arrayOf("down", "up", "x", "pause")
   
 
 
@@ -99,11 +100,13 @@ class RnChordsPlayerModule(val reactContext: ReactApplicationContext) :
 
     for (noteIndex in 0..notesAmount-1) {
       val note: String = notes?.getString(noteIndex) ?: DEFAULT_NOTE;
+      if (!ALLOW_STRIKES.contains(note))
+          continue;
       soundsNames.add(note);
-      if (!soundsIds.contains(note)) {
+      if (note!="pause" && !soundsIds.contains(note) ) {
         soundsIds.put(note, loadSound(note));
       }      
-    } 
+    }
   }
 
   /**
@@ -127,8 +130,9 @@ class RnChordsPlayerModule(val reactContext: ReactApplicationContext) :
         "down" -> soundPool?.load(reactContext, R.raw.down, 1) ?: 0;
         "up" -> soundPool?.load(reactContext, R.raw.up, 1) ?: 0;
         "x" -> soundPool?.load(reactContext, R.raw.x, 1) ?: 0;
+        "pause" -> 0;
         else -> {
-          soundPool?.load(reactContext, R.raw.x, 1) ?: 0;
+          0;
         }
     }
   }
@@ -143,7 +147,9 @@ class RnChordsPlayerModule(val reactContext: ReactApplicationContext) :
     timer = object: CountDownTimer(allDuration, interval) {
       override fun onTick(milliseconds: Long) {
         val currentStrike: String = soundsNames.elementAt(currentNoteIndex);
-        soundPool?.play(soundsIds.getOrDefault(currentStrike, 0), 1F, 1F, 1, 0, 1F);
+        if (currentStrike != "pause") {  
+          soundPool?.play(soundsIds.getOrDefault(currentStrike, 0), 1F, 1F, 1, 0, 1F);    
+        }
 
         val eventParams = Arguments.createMap().apply {
           putInt("strikeIndex", currentNoteIndex)

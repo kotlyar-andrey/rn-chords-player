@@ -4,12 +4,12 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { playBeat, stop, Beat, eventEmitter } from 'rn-chords-player';
 
 const beat1: Beat = {
-  strikes: ['down', 'up', 'x', 'up'],
+  strikes: ['down', 'up', 'x', 'up', 'p'],
   duration: 2,
 };
 const beat2: Beat = {
-  strikes: ['down', 'down', 'down', 'x', 'up'],
-  duration: 1,
+  strikes: ['down', 'pause', 'x', 'up', 'pause', 'up', 'x', 'up'],
+  duration: 3,
 };
 
 export default function App() {
@@ -36,7 +36,7 @@ export default function App() {
       <TouchableOpacity
         style={styles.box}
         onPress={() => {
-          playBeat(beat2, 300);
+          playBeat(beat2, 150);
         }}
       >
         <Text>Beat 2</Text>
