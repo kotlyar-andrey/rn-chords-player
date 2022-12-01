@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 
 const LINKING_ERROR =
   `The package 'rn-chords-player' doesn't seem to be linked. Make sure: \n\n` +
@@ -33,3 +33,5 @@ export function playBeat(beat: Beat, bpm: number): void {
 export function stop(): void {
   RnChordsPlayer.stop();
 }
+
+export const eventEmitter = new NativeEventEmitter(RnChordsPlayer);

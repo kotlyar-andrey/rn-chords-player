@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { playBeat, stop, Beat } from 'rn-chords-player';
+import { playBeat, stop, Beat, eventEmitter } from 'rn-chords-player';
 
 const beat1: Beat = {
   strikes: ['down', 'up', 'x', 'up'],
@@ -13,6 +13,16 @@ const beat2: Beat = {
 };
 
 export default function App() {
+  React.useEffect(() => {
+    const eventListener = eventEmitter.addListener('Strike', (event) => {
+      console.log('Strike: ', event.strikeIndex);
+    });
+
+    return () => {
+      eventListener.remove();
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity

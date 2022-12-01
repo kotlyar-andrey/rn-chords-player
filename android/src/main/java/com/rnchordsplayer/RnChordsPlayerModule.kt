@@ -5,11 +5,16 @@ import kotlin.math.roundToLong
 
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.Callback
+
+import com.facebook.react.bridge.WritableMap
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.modules.core.DeviceEventManagerModule
 
 import android.media.AudioAttributes
 import android.media.SoundPool
@@ -29,9 +34,28 @@ class RnChordsPlayerModule(val reactContext: ReactApplicationContext) :
                                             // хранит текстовое название и ID загруженного soundpool звука
   private val soundsNames: MutableList<String> = mutableListOf<String>(); // список проигрываения с названиями нот/боев
 
+  private val EVENT_STRIKE: String = "Strike";
+  
+
 
   override fun getName(): String {
     return NAME
+  }
+
+  private fun sendEvent(reactContext: ReactContext, eventName: String, params: WritableMap?) {
+    reactContext
+      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+      .emit(eventName, params)
+  }
+
+  @ReactMethod
+  fun addListener(eventName: String) {
+    Log.i("ReactNative", "add event listener called");
+  }
+
+  @ReactMethod
+  fun removeListeners(count: Int) {
+      Log.i("ReactNative", "remove event listener called")
   }
 
   /** Очищает timer, все загруженные звуки и сам soundPool */
@@ -120,6 +144,12 @@ class RnChordsPlayerModule(val reactContext: ReactApplicationContext) :
       override fun onTick(milliseconds: Long) {
         val currentStrike: String = soundsNames.elementAt(currentNoteIndex);
         soundPool?.play(soundsIds.getOrDefault(currentStrike, 0), 1F, 1F, 1, 0, 1F);
+
+        val eventParams = Arguments.createMap().apply {
+          putInt("strikeIndex", currentNoteIndex)
+        }
+        sendEvent(reactContext, EVENT_STRIKE, eventParams)
+
         currentNoteIndex++;
       }
       override fun onFinish() {
